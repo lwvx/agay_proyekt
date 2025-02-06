@@ -4,25 +4,20 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class EverymonthWidget extends StatelessWidget {
   final String? highlightedProperty;
   final Function(String) onSelect;
+  final List<Map<String, dynamic>> properties;
 
   const EverymonthWidget({
     super.key,
     required this.highlightedProperty,
-    required this.onSelect,
+    required this.onSelect, required this.properties,
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> properties = [
-      {'label': 'Every day'},
-      {'label': 'Every week'},
-      {'label': 'Every 2 weeks'},
-      {'label': 'Every 3 weeks'},
-      {'label': 'Every month'},
-    ];
+ 
 
     return Container(
-      height: 70.h,
+      height: 40.h,
       padding: EdgeInsets.all(16.sp),
       child: Column(
         mainAxisSize: MainAxisSize.min,
