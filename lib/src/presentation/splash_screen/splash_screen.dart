@@ -14,7 +14,6 @@ class SplashScreen extends StatelessWidget {
         end: Alignment.bottomCenter,
         colors: [
           Color(0xff171717),
-
           Color(0xff171717),
         ],
       ),
