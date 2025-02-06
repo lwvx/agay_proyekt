@@ -114,7 +114,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             ),
             SizedBox(height: 1.5.h),
             SizedBox(
-              height: 6.h,
+              height: 8.5.h,
               child: Column(
                 children: [
                   PreferredSize(
@@ -151,6 +151,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               adres: adresCon,
               name: nameCon,
             ),
+            
           ],
         ),
       ),

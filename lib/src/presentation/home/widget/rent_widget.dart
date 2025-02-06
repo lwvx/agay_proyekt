@@ -327,12 +327,30 @@ class _RentWidgetState extends State<RentWidget> with TickerProviderStateMixin {
               ],
             ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox.shrink(),
-              ],
-            ),
+          Column(
+            children: [
+              Spacer(),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  height: 7.h,
+                  width: 60.w,
+                  decoration: BoxDecoration(
+                    color: Color(0xff325FD3),
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Continue',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
