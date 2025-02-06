@@ -580,6 +580,26 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
+                              SizedBox(
+                                height: 2.h,
+                              ),
+                              Container(
+                                height: 7.h,
+                                width: 60.w,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff325FD3),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Continue',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
