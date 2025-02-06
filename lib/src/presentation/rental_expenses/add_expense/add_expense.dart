@@ -35,7 +35,7 @@ class _AddExpenseState extends State<AddExpense> {
       context: context,
       builder: (BuildContext builder) {
         return Container(
-          height: 32.h,
+          height: 33.h,
           color: Colors.white,
           child: Column(
             children: [
@@ -106,13 +106,43 @@ class _AddExpenseState extends State<AddExpense> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xff171717),
-        title: Text(
-          'Add expense',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w700,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: 5.h,
+              width: 9.w,
+              decoration: BoxDecoration(
+                color: Color(0xff242424),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Center(
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(
+                      (context),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Colors.white,
+                    size: 18.sp,
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              'Add expense',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(
+              width: 13.w,
+            ),
+          ],
         ),
       ),
       body: Padding(
@@ -132,7 +162,9 @@ class _AddExpenseState extends State<AddExpense> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Color(0xff325FD3)),
+                  borderSide: BorderSide(
+                    color: Color(0xff325FD3),
+                  ),
                 ),
               ),
               style: TextStyle(color: Colors.white),

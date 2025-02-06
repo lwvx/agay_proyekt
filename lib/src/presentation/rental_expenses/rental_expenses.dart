@@ -1,3 +1,4 @@
+import 'package:agay_proyekt/src/presentation/rental_expenses/edit_expense/edit_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'add_expense/add_expense.dart';
@@ -64,40 +65,61 @@ class _RentalExpensesState extends State<RentalExpenses> {
               itemCount: expenses.length,
               itemBuilder: (context, index) {
                 final expense = expenses[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                return GestureDetector(
+                  onTap: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditExpense(expense: expense, index: index),
+                      ),
+                    );
+                    if (result != null) {
+                      setState(() {
+                        expenses[result['index']] = result['updatedExpense'];
+                      });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(color: Colors.transparent),
+                    width: double.infinity,
+                    height: 10.h,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            Text(
+                              expense['name'],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              '${expense['amount']} \$',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                         Text(
-                          expense['name'],
+                          '${expense['date'].day}.${expense['date'].month}.${expense['date'].year}',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
+                            fontSize: 15.sp,
                             fontWeight: FontWeight.w400,
+                            color: Color(0xff939393),
                           ),
                         ),
-                        Spacer(),
-                        Text(
-                          '${expense['amount']} \$',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        Divider(thickness: 2.sp),
                       ],
                     ),
-                    Text(
-                      '${expense['date'].day}.${expense['date'].month}.${expense['date'].year}',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff939393),
-                      ),
-                    ),
-                    Divider(thickness: 2.sp),
-                  ],
+                  ),
                 );
               },
             ),
