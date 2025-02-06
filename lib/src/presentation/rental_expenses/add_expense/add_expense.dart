@@ -195,7 +195,11 @@ class _AddExpenseState extends State<AddExpense> {
             GestureDetector(
               onTap: isButtonActive
                   ? () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, {
+                        'name': _nameController.text,
+                        'amount': _amountController.text,
+                        'date': selectedDate,
+                      });
                     }
                   : null,
               child: Container(

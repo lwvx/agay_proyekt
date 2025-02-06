@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import 'add_expense/add_expense.dart';
 
-class RentalExpenses extends StatelessWidget {
+class RentalExpenses extends StatefulWidget {
   const RentalExpenses({super.key});
+
+  @override
+  State<RentalExpenses> createState() => _RentalExpensesState();
+}
+
+class _RentalExpensesState extends State<RentalExpenses> {
+  List<Map<String, dynamic>> expenses = [];
+
+  void _addExpense(String name, String amount, DateTime date) {
+    setState(() {
+      expenses.add({
+        'name': name,
+        'amount': amount,
+        'date': date,
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,42 +37,84 @@ class RentalExpenses extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Image.asset(
-              'assets/images/rental_expenses.png',
-              height: 30.h,
-              width: 90.w,
+      body: expenses.isEmpty
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Image.asset(
+                    'assets/images/rental_expenses.png',
+                    height: 30.h,
+                    width: 90.w,
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  'Your spending history is empty',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            )
+          : ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 15.sp),
+              itemCount: expenses.length,
+              itemBuilder: (context, index) {
+                final expense = expenses[index];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          expense['name'],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          '${expense['amount']} \$',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '${expense['date'].day}.${expense['date'].month}.${expense['date'].year}',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff939393),
+                      ),
+                    ),
+                    Divider(thickness: 2.sp),
+                  ],
+                );
+              },
             ),
-          ),
-          SizedBox(
-            height: 2.h,
-          ),
-          Text(
-            'Your spending history is empty',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(bottom: 20.sp),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => AddExpense(),
-                  ),
+                  MaterialPageRoute(builder: (context) => AddExpense()),
                 );
+                if (result != null) {
+                  _addExpense(result['name'], result['amount'], result['date']);
+                }
               },
               child: Container(
                 height: 7.h,
