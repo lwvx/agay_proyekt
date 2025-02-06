@@ -1,3 +1,6 @@
+import 'package:agay_proyekt/src/presentation/home/widget/custom_textfild.dart';
+import 'package:agay_proyekt/src/presentation/home/widget/property_type_widget.dart';
+import 'package:agay_proyekt/src/presentation/home/widget/rent_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -6,42 +9,15 @@ class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
-  String selectedProperty = 'Property type';
-  String? highlightedProperty;
-  bool isContainerSelected = false;
   late TabController _tabController;
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+  String? highlightedProperty;
+  bool isContainerSelected = false;
   void _showBottomSheet(BuildContext context) {
-    List<Map<String, dynamic>> properties = [
-      {'label': 'Apartment'},
-      {'label': 'House'},
-      {'label': 'Room'},
-      {'label': 'Office premises'},
-      {'label': 'Commercial'},
-      {'label': 'Warehouse'},
-      {'label': 'Specialized premises '},
-      {'label': 'Holiday home'},
-      {'label': 'Cottage'},
-      {'label': 'Hangar'},
-      {'label': 'Land plot'},
-    ];
-
     showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xff171717),
@@ -51,93 +27,23 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         ),
       ),
       builder: (context) {
-        return Container(
-          height: 70.h,
-          padding: EdgeInsets.all(16.sp),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(width: 6.w),
-                  Text(
-                    'Select the type of real estate',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      height: 2.5.h,
-                      width: 5.5.w,
-                      decoration: BoxDecoration(
-                        color: Color(0xff393937),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 18.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 2.h),
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemCount: properties.length,
-                  itemBuilder: (context, index) {
-                    bool isSelected =
-                        properties[index]['label'] == highlightedProperty;
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedProperty = properties[index]['label'];
-                          highlightedProperty = properties[index]['label'];
-                          isContainerSelected = true;
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? Color(0xff325FD3)
-                              : Color(0xff393937),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                          child: Text(
-                            properties[index]['label'],
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+        return PropertytypeWidget(
+          highlightedProperty: highlightedProperty,
+          onSelect: (String property) {
+            setState(() {
+              selectedProperty = property;
+              highlightedProperty = property;
+              isContainerSelected = true;
+            });
+          },
         );
       },
     );
   }
 
+  String selectedProperty = 'Property type';
+  final nameCon = TextEditingController();
+  final adresCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,68 +97,28 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
               ),
             ),
             SizedBox(height: 1.h),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Name',
-                labelText: 'Name',
-                hintStyle: TextStyle(
-                  color: Color(0xff4B4B4B),
-                ),
-                labelStyle: TextStyle(
-                  color: Color(0xff4B4B4B),
-                ),
-                filled: true,
-                fillColor: Color(0xff171717),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Color(0xff393937),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Color(0xff325FD3),
-                  ),
-                ),
-              ),
-              style: TextStyle(color: Colors.white),
+            CustomTextField(
+              hintText: 'Name',
+              controller: nameCon,
+              labelText: 'Name',
             ),
             SizedBox(height: 1.h),
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.location_on_sharp,
-                  color: Color(0xff4B4B4B),
-                ),
-                hintText: 'Address',
-                labelText: 'Address',
-                filled: true,
-                labelStyle: TextStyle(
-                  color: Color(0xff4B4B4B),
-                ),
-                fillColor: Color(0xff171717),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Color(0xff325FD3),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: Color(0xff325FD3),
-                  ),
-                ),
+            CustomTextField(
+              controller: adresCon,
+              prefixIcon: Icon(
+                Icons.location_on_sharp,
+                color: Color(0xff4B4B4B),
               ),
-              style: TextStyle(color: Colors.white),
+              hintText: 'Address',
+              labelText: 'Address',
             ),
             SizedBox(height: 1.5.h),
-            Expanded(
+            SizedBox(
+              height: 8.5.h,
               child: Column(
                 children: [
                   PreferredSize(
-                    preferredSize: Size.fromHeight(50),
+                    preferredSize: Size.fromHeight(20),
                     child: Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: 15.sp, vertical: 8.sp),
@@ -277,196 +143,30 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(height: 1.5.h),
-                              TextField(
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.person,
-                                    color: Color(0xff4B4B4B),
-                                  ),
-                                  hintText: 'Tenant',
-                                  labelText: 'Tenant',
-                                  filled: true,
-                                  labelStyle: TextStyle(
-                                    color: Color(0xff4B4B4B),
-                                  ),
-                                  fillColor: Color(0xff171717),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      color: Color(0xff325FD3),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      color: Color(0xff325FD3),
-                                    ),
-                                  ),
-                                ),
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              TextField(
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.phone,
-                                    color: Color(0xff4B4B4B),
-                                  ),
-                                  hintText: 'Contact details',
-                                  labelText: 'Contact details',
-                                  filled: true,
-                                  labelStyle: TextStyle(
-                                    color: Color(0xff4B4B4B),
-                                  ),
-                                  fillColor: Color(0xff171717),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      color: Color(0xff325FD3),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      color: Color(0xff325FD3),
-                                    ),
-                                  ),
-                                ),
-                                style: TextStyle(color: Colors.white),
-                                keyboardType: TextInputType.phone,
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              TextField(
-                                decoration: InputDecoration(
-                                  prefixIcon: Padding(
-                                    padding: EdgeInsets.all(13.sp),
-                                    child: SvgPicture.asset(
-                                        'assets/svg/dollar.svg'),
-                                  ),
-                                  hintText: 'Contact details',
-                                  labelText: 'Contact details',
-                                  filled: true,
-                                  suffixIcon: Padding(
-                                    padding: EdgeInsets.all(15.sp),
-                                    child:
-                                        SvgPicture.asset('assets/svg/\$.svg'),
-                                  ),
-                                  labelStyle: TextStyle(
-                                    color: Color(0xff4B4B4B),
-                                  ),
-                                  fillColor: Color(0xff171717),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      color: Color(0xff325FD3),
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                      color: Color(0xff325FD3),
-                                    ),
-                                  ),
-                                ),
-                                style: TextStyle(color: Colors.white),
-                                keyboardType: TextInputType.phone,
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Container(
-                                height: 13.h,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Color(0xff171717),
-                                  border: Border.all(
-                                    color: Color(0xff393937),
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15.sp, vertical: 15.sp),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                'assets/svg/calendar.svg'),
-                                            SizedBox(
-                                              width: 2.w,
-                                            ),
-                                            Text(
-                                              'Date of payment',
-                                              style: TextStyle(
-                                                color: Color(0xff4B4B4B),
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        color: Color(0xff4B4B4B),
-                                        indent: 20.sp,
-                                      ),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                              'assets/svg/Vector.svg'),
-                                          SizedBox(
-                                            width: 2.5.w,
-                                          ),
-                                          Text(
-                                            'Every month',
-                                            style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox.shrink(),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
+            RentWidget(
+              tabControlle: _tabController,
+              adres: adresCon,
+              name: nameCon,
+            ),
+            
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }
