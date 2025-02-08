@@ -1,3 +1,4 @@
+import 'package:agay_proyekt/src/model/info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -27,7 +28,6 @@ class _NewEmployeeState extends State<NewEmployee> {
   Color? selectedContainerColor;
 
   bool isFormValid() {
-    // Check if all necessary fields are filled out
     return nameCont.text.isNotEmpty &&
         positionCont.text.isNotEmpty &&
         salaryCont.text.isNotEmpty &&
@@ -216,9 +216,7 @@ class _NewEmployeeState extends State<NewEmployee> {
       height: 6.5.h,
       width: double.infinity,
       decoration: BoxDecoration(
-          color: isFormValid()
-              ? Color(0xff4A53E4)
-              : Colors.grey, // Change color based on form validation
+          color: isFormValid() ? Color(0xff4A53E4) : Colors.grey,
           borderRadius: BorderRadius.circular(15)),
       child: Center(
         child: Text('Save',
@@ -242,7 +240,6 @@ class _NewEmployeeState extends State<NewEmployee> {
         padding: EdgeInsets.symmetric(horizontal: 15.sp),
         child: Row(
           children: [
-            // Этот маленький цветной контейнер перед текстом
             Container(
               height: 1.5.h,
               width: 3.5.w,
@@ -250,8 +247,7 @@ class _NewEmployeeState extends State<NewEmployee> {
                   color: selectedContainerColor ?? Color(0xff141414),
                   borderRadius: BorderRadius.circular(20)),
             ),
-            SizedBox(
-                width: 2.w), // Немного пространства между контейнером и текстом
+            SizedBox(width: 2.w),
             Text(selectedStatus,
                 style: GoogleFonts.tomorrow(
                     fontSize: 17.sp,
@@ -317,26 +313,38 @@ class _NewEmployeeState extends State<NewEmployee> {
                   hintText: 'Extra details',
                   labelText: 'Notes'),
               SizedBox(height: 2.5.h),
+              // Внутри _buildSaveButton в NewEmployee
               GestureDetector(
                 onTap: () {
                   if (isFormValid()) {
-                    Navigator.pop(context);
+                    final newEmployee = Employee(
+                      name: nameCont.text,
+                      position: positionCont.text,
+                      salary: salaryCont.text,
+                      status: selectedStatus,
+                      statusColor: selectedContainerColor ?? Colors.white,
+                      notes: notesCont.text,
+                      image: _image,
+                    );
+                    Navigator.pop(context, newEmployee);
                   }
                 },
                 child: Container(
                   height: 6.5.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: isFormValid()
-                          ? Color(0xff4A53E4)
-                          : Colors.grey, // Set the button color
-                      borderRadius: BorderRadius.circular(15)),
+                    color: isFormValid() ? Color(0xff4A53E4) : Colors.grey,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: Center(
-                    child: Text('Save',
-                        style: GoogleFonts.tomorrow(
-                            color: Colors.white,
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w500)),
+                    child: Text(
+                      'Save',
+                      style: GoogleFonts.tomorrow(
+                        color: Colors.white,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -390,11 +398,13 @@ class _NewEmployeeState extends State<NewEmployee> {
                 children: [
                   SvgPicture.asset('assets/svg/svg_picker.svg'),
                   SizedBox(height: 0.5.h),
-                  Text('Add Photo',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400)),
+                  Text(
+                    'Add Photo',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ],
               ),
       ),
