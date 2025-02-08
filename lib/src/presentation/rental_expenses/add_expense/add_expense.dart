@@ -111,7 +111,7 @@ class _AddExpenseState extends State<AddExpense> {
           children: [
             Container(
               height: 5.h,
-              width: 9.w,
+              width: 11.w,
               decoration: BoxDecoration(
                 color: Color(0xff242424),
                 borderRadius: BorderRadius.circular(50),
